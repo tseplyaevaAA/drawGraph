@@ -16,6 +16,20 @@ namespace GraphApp
         List<Vertex> Vertices;
         List<Edge> Edges;
 
+        public struct VertexColor
+        {
+            public int number { get; set; }
+            public int color { get; set; }
+            public int stepen { get; set; }
+
+            public VertexColor(int number, int color, int stepen)
+            {
+                this.number = number;
+                this.color = color;
+                this.stepen = stepen;
+            }
+        }
+
         int[,] AMatrix; //матрица смежности
 
         int firstSelectedVertex; 
@@ -106,16 +120,86 @@ namespace GraphApp
             Graph.fillAdjacencyMatrix(Vertices.Count, Edges, AMatrix);
             listBox.Items.Clear();
             string sOut = "    ";
-            for (int i = 0; i < Vertices.Count; i++)
-                sOut += (i + 1) + " ";
+            for (int i1 = 0; i1 < Vertices.Count; i1++)
+                sOut += (i1 + 1) + " ";
             listBox.Items.Add(sOut);
-            for (int i = 0; i < Vertices.Count; i++)
+            for (int i1 = 0; i1 < Vertices.Count; i1++)
             {
-                sOut = (i + 1) + " | ";
-                for (int j = 0; j < Vertices.Count; j++)
-                    sOut += AMatrix[i, j] + " ";
+                sOut = (i1 + 1) + " | ";
+                for (int j1 = 0; j1 < Vertices.Count; j1++)
+                    sOut += AMatrix[i1, j1] + " ";
                 listBox.Items.Add(sOut);
             }
+
+
+            List<VertexColor> gColor = new List<VertexColor>();
+            //степени вершин 
+            for (int i2 = 0; i2 < Vertices.Count; i2++)
+            {
+                VertexColor item = new VertexColor(i2, 0, 0);
+                for (int j2=0; j2 < Vertices.Count; j2++)
+                {
+                    if (AMatrix[i2, j2] == 1)
+                    {
+                        item.stepen++;
+                    }
+                }
+                gColor.Add(item);
+            }
+
+            gColor = gColor.OrderByDescending(z => z.stepen).ToList();
+
+            List<int> color1 = new List<int>{ 1, 2, 3, 4, 5 };
+
+            int x = 0, t, i, j, st, flag = 0, metk = 0, s;
+
+            for (x = 0; CheckColor(gColor) != 0; x++)//cikl po cvetam ulovie vixoda vse okrasheni
+            {
+                if (gColor[x].color == 66)
+                {
+                    //prisvaivaem pervii cvet 
+                    gColor[x].color = color1[x];
+                }
+
+                for (i = 0; i < gColor.Count; i++) //cikl ctobi ne toliko odnu vershinu raskarasiti a vse ne smejnie
+                {
+                    t = arr[i].number; //nomer stroki matrici smejnosti !!!!bilo - x
+                    flag = 0;
+                    for (j = 0; j < n; j++)    //idem v stroku matrici po nomeru 
+                    {
+                        if ((m[t][j] == 1 && t != j))  // || mx[t][j] == 0 && j == arr[j].number && t!=j
+                        {
+                            for (s = 0; s < n; s++)   //
+                                if (j == arr[s].number && arr[s].color != color1[x])
+                                {
+                                    ++flag;
+                                    // metk=j;         ////!!!!!!!!!!!!!!!! 
+                                    // break;
+                                }
+                        }
+
+                        if (arr[j].number == t) metk = j;
+
+                        if (flag == arr[metk].stepeni && arr[metk].color == 66)    ///!!!
+                            arr[metk].color = color1[x];
+                        // else break;   ////!!!!
+                    }
+                }
+            }
+        }
+
+        int CheckColor(List<VertexColor> graph)
+        {
+            int flag2 = 0;
+            foreach (var item in graph)
+            {
+                if (item.color <= 5)
+                {
+                    flag2++;
+                }
+            }
+            if (flag2 == graph.Count) return 0;
+            else return 1;
         }
 
         private void layout_MouseClick(object sender, MouseEventArgs e)

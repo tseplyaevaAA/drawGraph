@@ -43,7 +43,7 @@ namespace GraphApp
         Brush br;
         PointF point;
         public int R = 15; //vertex radius
-
+         
         public GraphDrawer(int width, int height)
         {
             bitmap = new Bitmap(width, height);
