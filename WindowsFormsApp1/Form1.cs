@@ -170,23 +170,134 @@ namespace GraphApp
             IEnumerable<IEnumerable<string>> result =
                 GetCombinations<string>(myEnumerable, (graph.Count-1));
 
-            List<List<string>> wRepeatcodeCombinations = new List<List<string>>();
+            List<List<string>> wRepeatCodeCombinations = new List<List<string>>();
             foreach (var code in result)
             {
-                //List<string> wRepeatCode = new List<string>();
                 bool hasRepeat = AreAnyDuplicates(code);
                 if (!hasRepeat)
                 {
-                    //wRepeatCode = code.ToList();
-                    wRepeatcodeCombinations.Add(code.ToList());
+                    wRepeatCodeCombinations.Add(code.ToList());
                 }
             }
 
-            /*    foreach (var code in result)
+            List<List<string>> prefixCodes = new List<List<string>>();
+            // check prefix
+            foreach (var code in wRepeatCodeCombinations)
             {
-                List<string> code1 = new List<string>();
-                code1 = code.ToList();
+                bool checkPrefixCode = CheckPrefixCode(code);
+                if (checkPrefixCode)
+                {
+                    // вставляем элемент для n вершины (для исходного графа)
+                    string str1 = code[n1];
+                    code.Insert(n2, str1);
+                    prefixCodes.Add(code);
+                }
+            }
+
+            List<List<int>> spectrMatrix = new List<List<int>>();
+            foreach (var code in prefixCodes)
+            {
+                List<int> dItem = new List<int>();
+                foreach (string str in code)
+                {
+                    dItem.Add(str.Length);
+                }
+                spectrMatrix.Add(dItem);
+            }
+
+            List<int> indexToRemove = new List<int>();
+            /*foreach (var d in spectrMatrix)
+            {
+                foreach (var d1 in spectrMatrix)
+                {
+                    int m = MajorizesOrMatches(d, d1);
+                    if (spectrMatrix.IndexOf(d) != spectrMatrix.IndexOf(d1))
+                    {
+                        if (m == 1)
+                        {
+                            int index = spectrMatrix.IndexOf(d);
+                            spectrMatrix.RemoveAt(index);
+                            prefixCodes.RemoveAt(index);
+                            indexToRemove.Add(spectrMatrix.IndexOf(d));
+                        }
+                        if (m == 2)
+                        {
+                            indexToRemove.Add(spectrMatrix.IndexOf(d1));
+                        }
+                    }
+                }
             }*/
+
+
+            // сначала удалить повторяющиеся, потом мажоранты
+            for (int i = 0; i < spectrMatrix.Count; i++)
+            {
+                for (int j = i+1; j < spectrMatrix.Count; j++)
+                {
+                    int m = MajorizesOrMatches(spectrMatrix[i], spectrMatrix[j]);
+                    if (m == 1)
+                    {
+                        if (!indexToRemove.Contains(spectrMatrix.IndexOf(spectrMatrix[i])))
+                        {
+                            indexToRemove.Add(spectrMatrix.IndexOf(spectrMatrix[i]));
+                        }
+                    }
+                    if (m == 2)
+                    {
+                        if (!indexToRemove.Contains(spectrMatrix.IndexOf(spectrMatrix[j])))
+                        {
+                            indexToRemove.Add(spectrMatrix.IndexOf(spectrMatrix[j]));
+                        }
+                    }
+                }
+            }
+
+        }
+
+        //удалить мажорирующие спектры (сделать матрицу оптимальной)
+        public int MajorizesOrMatches(List<int> d1, List<int> d2)
+        {
+            int k= 0;
+            int k1 = 0;
+            for (int i = 0; i < d1.Count; i++)
+            {
+                if (d1[i] >= d2[i])
+                {
+                    k++;
+                }
+            }
+            for (int i = 0; i < d1.Count; i++)
+            {
+                if (d2[i] >= d1[i])
+                {
+                    k1++;
+                }
+            }
+            if (k == d1.Count) { return 1; }   // d1 majorizes d2
+            if (2 == d1.Count) { return 2; }   // d2 majorizes d1
+            return -1; // nothing
+        }
+
+        public bool CheckPrefixCode(List<string> code)
+        {
+            for(int i=0; i < code.Count; i++)
+            {
+                for (int j = i+1 ; j < code.Count; j++)
+                {
+                    // если встретится хотя бы одна непрефиксная пара
+                    if (NotPrefixPair(code[i], code[j])) return false;
+                }
+            }
+            return true;
+        }
+
+        public bool NotPrefixPair(string one, string two)
+        {
+            if ((one.StartsWith(two)) || (two.StartsWith(one)))
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool AreAnyDuplicates<T>(IEnumerable<T> list)
