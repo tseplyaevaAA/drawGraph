@@ -16,6 +16,20 @@ namespace GraphApp
         List<Vertex> Vertices;
         List<Edge> Edges;
 
+        public struct VertexColor
+        {
+            public int number { get; set; }
+            public int color { get; set; }
+            public int stepen { get; set; }
+
+            public VertexColor(int number, int color, int stepen)
+            {
+                this.number = number;
+                this.color = color;
+                this.stepen = stepen;
+            }
+        }
+
         int[,] AMatrix; //матрица смежности
 
         int firstSelectedVertex; 
@@ -106,17 +120,116 @@ namespace GraphApp
             Graph.fillAdjacencyMatrix(Vertices.Count, Edges, AMatrix);
             listBox.Items.Clear();
             string sOut = "    ";
-            for (int i = 0; i < Vertices.Count; i++)
-                sOut += (i + 1) + " ";
+            for (int i1 = 0; i1 < Vertices.Count; i1++)
+                sOut += (i1 + 1) + " ";
             listBox.Items.Add(sOut);
-            for (int i = 0; i < Vertices.Count; i++)
+            for (int i1 = 0; i1 < Vertices.Count; i1++)
             {
-                sOut = (i + 1) + " | ";
-                for (int j = 0; j < Vertices.Count; j++)
-                    sOut += AMatrix[i, j] + " ";
+                sOut = (i1 + 1) + " | ";
+                for (int j1 = 0; j1 < Vertices.Count; j1++)
+                    sOut += AMatrix[i1, j1] + " ";
                 listBox.Items.Add(sOut);
             }
+            
+            //////////////////////////////////////////////////////////////////////////////////
+
+            List<VertexColor> graph = new List<VertexColor>();
+            //степени вершин 
+            for (int i2 = 0; i2 < Vertices.Count; i2++)
+            {
+                VertexColor item = new VertexColor(i2, 0, 0);
+                for (int j2=0; j2 < Vertices.Count; j2++)
+                {
+                    if (AMatrix[i2, j2] == 1)
+                    {
+                        item.stepen++;
+                    }
+                }
+                graph.Add(item);
+            }
+
+            graph = graph.OrderBy(z => z.stepen).ToList();
+
+            List<string> wordList = new List<string>();
+            // список возможных слов для неполного графа (длина до m-2)
+            for (int i = 1; i <= (graph.Count -2); i++)
+            {
+                List<string> local = getStringList(i, new string[] { "0", "1" });
+                foreach (var str in local)
+                {
+                    wordList.Add(str);
+                }
+            }
+
+            //находим несмежные вершины (нумерация с 0)
+            int n1 = graph[0].number;
+            int n2 = graph[1].number;
+
+
+            IEnumerable<string> myEnumerable = wordList;
+            IEnumerable<IEnumerable<string>> result =
+                GetCombinations<string>(myEnumerable, (graph.Count-1));
+
+            List<List<string>> wRepeatcodeCombinations = new List<List<string>>();
+            foreach (var code in result)
+            {
+                //List<string> wRepeatCode = new List<string>();
+                bool hasRepeat = AreAnyDuplicates(code);
+                if (!hasRepeat)
+                {
+                    //wRepeatCode = code.ToList();
+                    wRepeatcodeCombinations.Add(code.ToList());
+                }
+            }
+
+            /*    foreach (var code in result)
+            {
+                List<string> code1 = new List<string>();
+                code1 = code.ToList();
+            }*/
         }
+
+        public bool AreAnyDuplicates<T>(IEnumerable<T> list)
+        {
+            var hashset = new HashSet<T>();
+            return list.Any(e => !hashset.Add(e));
+        }
+
+        static IEnumerable<IEnumerable<T>>   GetCombinations<T>(IEnumerable<T> list, int length)
+        {
+            if (length == 1) return list.Select(t => new T[] { t });
+
+            return GetCombinations(list, length - 1)
+                .SelectMany(t => list, (t1, t2) => t1.Concat(new T[] { t2 }));
+        }
+
+        public List<string> getStringList(int N, string[] arr)
+        {
+            List<string> OutArr = new List<string>();
+
+            if (arr == null || arr.Length == 0 || N <= 0) return null;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                getString(OutArr, arr[i].ToString(), N - 1, arr);
+            }
+            return OutArr;
+        }
+
+        private void getString(List<string> OutArr, string strToAppend, int N, string[] arr)
+        {
+            if(N==0) 
+            {
+                OutArr.Add(strToAppend);
+                return;
+            }
+    
+            for (int i = 0; i<arr.Length; i++)
+            {
+                getString(OutArr, strToAppend+arr[i].ToString(), N-1, arr);
+            }
+        }
+
 
         private void layout_MouseClick(object sender, MouseEventArgs e)
         {
