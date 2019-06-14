@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -283,8 +284,18 @@ namespace GraphApp
             string[] sizes = freqSrt.Split(' ', '\t');
             foreach (var i in sizes)
             {
-                var str =  i.Replace('.', ',');
-                freq.Add(Convert.ToDouble(str));
+                string str = "";
+                if (i.Contains(","))
+                {
+                    str = i.Replace(',', '.');
+                }
+                else
+                {
+                    str = i;
+                }
+
+                double m = Convert.ToDouble(str);
+                freq.Add(m);
             }
 
             List<VertexColor> graph = new List<VertexColor>();
@@ -331,6 +342,7 @@ namespace GraphApp
                 bool hasRepeat = AreAnyDuplicates(code);
                 if (!hasRepeat)
                 {
+                    if (!wRepeatCodeCombinations.Contains(code));
                     wRepeatCodeCombinations.Add(code.ToList());
                 }
             }
@@ -540,8 +552,18 @@ namespace GraphApp
             string[] sizes = freqSrt.Split(' ', '\t');
             foreach (var i in sizes)
             {
-                var str11 = i.Replace('.', ',');
-                freq1.Add(Convert.ToDouble(str11));
+                string str11 = "";
+                if (i.Contains(","))
+                {
+                    str11 = i.Replace(',', '.');
+                }
+                else
+                {
+                    str11 = i;
+                }
+
+                double m = Convert.ToDouble(str11);
+                freq1.Add(m);
             }
 
             List<VertexColor> graph = new List<VertexColor>();

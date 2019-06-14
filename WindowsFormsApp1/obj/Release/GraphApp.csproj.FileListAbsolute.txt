@@ -1,0 +1,10 @@
+D:\drawGraph\WindowsFormsApp1\bin\Release\WindowsFormsApp1.exe.config
+D:\drawGraph\WindowsFormsApp1\bin\Release\WindowsFormsApp1.exe
+D:\drawGraph\WindowsFormsApp1\bin\Release\WindowsFormsApp1.pdb
+D:\drawGraph\WindowsFormsApp1\obj\Release\GraphApp.csprojAssemblyReference.cache
+D:\drawGraph\WindowsFormsApp1\obj\Release\GraphApp.Form1.resources
+D:\drawGraph\WindowsFormsApp1\obj\Release\WindowsFormsApp1.Properties.Resources.resources
+D:\drawGraph\WindowsFormsApp1\obj\Release\GraphApp.csproj.GenerateResource.cache
+D:\drawGraph\WindowsFormsApp1\obj\Release\GraphApp.csproj.CoreCompileInputs.cache
+D:\drawGraph\WindowsFormsApp1\obj\Release\WindowsFormsApp1.exe
+D:\drawGraph\WindowsFormsApp1\obj\Release\WindowsFormsApp1.pdb

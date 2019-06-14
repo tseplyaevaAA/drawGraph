@@ -21,7 +21,6 @@ D:\study\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 D:\drawGraph\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
 D:\drawGraph\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
 D:\drawGraph\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
-D:\drawGraph\WindowsFormsApp1\obj\Debug\GraphApp.csprojAssemblyReference.cache
 D:\drawGraph\WindowsFormsApp1\obj\Debug\GraphApp.Form1.resources
 D:\drawGraph\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
 D:\drawGraph\WindowsFormsApp1\obj\Debug\GraphApp.csproj.GenerateResource.cache
@@ -37,3 +36,4 @@ D:\study\drawGraph\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 D:\study\drawGraph\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
 D:\study\drawGraph\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
 D:\study\drawGraph\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+D:\drawGraph\WindowsFormsApp1\obj\Debug\GraphApp.csprojAssemblyReference.cache

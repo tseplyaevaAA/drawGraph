@@ -34,40 +34,38 @@ namespace GraphApp
 
     public class HuffmanNode : IComparable<HuffmanNode>
     {
-        public string symbol;   // For the character of char value. Public because Process class use it.
-        public double frequency;          // Number of the count on file, string, text.
-        public string code;            // Getting from a tree for making a huffman tree.
-        public HuffmanNode parentNode; // Parent Node of current Node.
-        public HuffmanNode leftTree;   // Left Node of current Node.
-        public HuffmanNode rightTree;  // Right Node of current Node.
-        public bool isLeaf;            // Shows it is a leaf.
+        public string symbol;
+        public double frequency;
+        public string code;
+        public HuffmanNode parentNode;
+        public HuffmanNode leftTree;
+        public HuffmanNode rightTree;
+        public bool isLeaf;
 
 
-        public HuffmanNode(string value, double freq)    // Creating a Node with given value(character).
+        public HuffmanNode(string value, double freq)    // Creating a Node with given value(character) and frequency.
         {
-            symbol = value;     // Setting the symbol.
-            frequency = freq;      // This is creation of Node, so now its count is 1.
+            symbol = value;
+            frequency = freq;
 
-            rightTree = leftTree = parentNode = null;       // Does not have a left or right tree and a parent.
+            rightTree = leftTree = parentNode = null;
 
-            code = "";          // It will be Assigned on the making Tree. Now it is empty.
-            isLeaf = true;      // Because all Node we create first does not have a parent Node.
+            code = "";
+            isLeaf = true;
         }
 
 
         public HuffmanNode(HuffmanNode node1, HuffmanNode node2) // Join the 2 Node to make Node.
         {
-            // Firsly we are adding this 2 Nodes' variables. Except the new Node's left and right tree.
             code = "";
             isLeaf = false;
             parentNode = null;
 
-            // Now the new Node need leaf. They are node1 and node2. if node1's frequency is bigger than or equal to node2's frequency. It is right tree. Otherwise left tree. The controllers are below:
             if (node1.frequency >= node2.frequency)
             {
                 rightTree = node1;
                 leftTree = node2;
-                rightTree.parentNode = leftTree.parentNode = this;     // "this" means the new Node!
+                rightTree.parentNode = leftTree.parentNode = this;
                 symbol = node1.symbol + node2.symbol;
                 frequency = node1.frequency + node2.frequency;
             }
@@ -75,14 +73,14 @@ namespace GraphApp
             {
                 rightTree = node2;
                 leftTree = node1;
-                leftTree.parentNode = rightTree.parentNode = this;     // "this" means the new Node!
+                leftTree.parentNode = rightTree.parentNode = this;
                 symbol = node2.symbol + node1.symbol;
                 frequency = node2.frequency + node1.frequency;
             }
         }
 
 
-        public int CompareTo(HuffmanNode otherNode) // We just override the CompareTo method. Because when we compare two Node, it must be according to frequencies of the Nodes.
+        public int CompareTo(HuffmanNode otherNode) //override the CompareTo method. Because when we compare two Node, it must be according to frequencies of the Nodes.
         {
             return this.frequency.CompareTo(otherNode.frequency);
         }
