@@ -32,6 +32,12 @@ namespace GraphApp
             }
         }
 
+        struct Element
+        {
+            public int key { get; set; }
+            public double value { get; set; }
+        }
+
         int[,] AMatrix; //матрица смежности
 
         int firstSelectedVertex; 
@@ -285,9 +291,9 @@ namespace GraphApp
             foreach (var i in sizes)
             {
                 string str = "";
-                if (i.Contains(","))
+                if (i.Contains("."))
                 {
-                    str = i.Replace(',', '.');
+                    str = i.Replace('.', ',');
                 }
                 else
                 {
@@ -553,9 +559,9 @@ namespace GraphApp
             foreach (var i in sizes)
             {
                 string str11 = "";
-                if (i.Contains(","))
+                if (i.Contains("."))
                 {
-                    str11 = i.Replace(',', '.');
+                    str11 = i.Replace('.', ',');
                 }
                 else
                 {
@@ -584,7 +590,7 @@ namespace GraphApp
             graph = graph.OrderBy(z => z.stepen).ToList();
 
             //находим несмежные вершины (нумерация с 0)
-            int n1 = graph[0].number; // во внимание не берем при построении преф кода
+            int n1 = graph[0].number; // во внисчмание не берем при построении преф кода
             int n2 = graph[1].number;
 
             Stopwatch stopWatch = new Stopwatch();
@@ -596,13 +602,24 @@ namespace GraphApp
             }
 
             freq[n2] += freq[n1];
-            freq.RemoveAt(n1);
+            List<Element> q = new List<Element>();
+            for(int i=0;i<freq.Count;i++)
+            {
+                Element el = new Element();
+                el.key = i;
+                el.value = freq[i];
+                q.Add(el);
+            }
+            q.Remove(q[n1]);
+
+            //freq.RemoveAt(n1);
 
             List<HuffmanNode> nodeList = new List<HuffmanNode>();
-            for(int i=1; i< graph.Count; i++)
+            foreach(var el in q)
             {
-                nodeList.Add(new HuffmanNode(graph[i].number.ToString(), freq[i-1]));
+                nodeList.Add(new HuffmanNode( el.key.ToString() , el.value));
             }
+
             nodeList.Sort();
 
             GetTreeFromList(nodeList);
